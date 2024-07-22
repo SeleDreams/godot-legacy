@@ -31,7 +31,7 @@ Development is sponsored by OKAM Studio (http://www.okamstudio.com).
 
 ### Documentation
 
-Documentation has been moved to the [GitHub Wiki](https://github.com/okamstudio/godot/wiki).
+Documentation has been moved to the [GitHub Wiki](https://github.com/SeleDreams/godot-legacy/wiki).
 
 ### Binary Downloads, Community, etc.
 
@@ -42,4 +42,4 @@ http://www.godotengine.org
 ### Compiling from Source
 
 Compilation instructions for every platform can be found in the Wiki:
-https://github.com/okamstudio/godot/wiki/advanced
+https://github.com/SeleDreams/godot-legacy/wiki/advanced
