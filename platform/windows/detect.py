@@ -59,7 +59,7 @@ def configure(env):
 
 	env.Append(CPPPATH=['#platform/windows'])
 
-	if (os.name=="nt" and os.getenv("VCINSTALLDIR")!=None):
+	if (os.name=="nt" and (os.getenv("VCINSTALLDIR") or os.getenv("VCTOOLSINSTALLDIR"))):
 		#build using visual studio
 		env['ENV']['TMP'] = os.environ['TMP']
 		env.Append(CPPPATH=['#platform/windows/include'])
