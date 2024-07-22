@@ -113,7 +113,6 @@ def configure(env):
 				VC_PATH=os.getenv("VCINSTALLDIR")
 		else:
 				VC_PATH=""
-		print(os.getenv("INCLUDE"))
 		env.Append(CCFLAGS=["/I" + p for p in os.getenv("INCLUDE").split(";")])
 		env.Append(LIBPATH=[p for p in os.getenv("LIB").split(";")])
 		env.Append(CCFLAGS=["/I"+DIRECTX_PATH+"/Include"])
@@ -244,7 +243,7 @@ def configure(env):
 
 		env.Append(CCFLAGS=['-DWINDOWS_ENABLED','-mwindows'])
 		env.Append(CPPFLAGS=['-DRTAUDIO_ENABLED'])
-		env.Append(CCFLAGS=['-DGLES2_ENABLED','-DGLES1_ENABLED','-DGLEW_ENABLED'])
+		env.Append(CCFLAGS=['-DOPENGL_ENABLED','-DGLES2_ENABLED','-DGLES1_ENABLED','-DGLEW_ENABLED'])
 		env.Append(LIBS=['mingw32','opengl32', 'dsound', 'ole32', 'd3d9','winmm','gdi32','iphlpapi','wsock32','kernel32'])
 		env.Append(CCFLAGS=['-Wno-error=incompatible-pointer-types'])
 		if (env["bits"]=="32" and env["mingw64_for_32"]!="yes"):

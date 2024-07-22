@@ -1,4 +1,4 @@
-EnsureSConsVersion(0,14);
+EnsureSConsVersion(0,98,1);
 
 import string
 import os
@@ -61,6 +61,7 @@ elif (os.name=="nt"):
 		custom_tools=['mingw']
 
 env_base=Environment(tools=custom_tools,ENV = {'PATH' : os.environ['PATH']});
+
 #env_base=Environment(tools=custom_tools);
 env_base.global_defaults=global_defaults
 env_base.android_source_modules=[]
@@ -159,7 +160,7 @@ if env_base['platform'] != "":
 elif env_base['p'] != "":
 	selected_platform=env_base['p']
 	env_base["platform"]=selected_platform
-
+env_base["devkitpro"] = ARGUMENTS.get('devkitpro',"")
 
 if selected_platform in platform_list:
 
