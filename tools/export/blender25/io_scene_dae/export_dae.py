@@ -1568,7 +1568,7 @@ class DaeExporter:
 		    self.export_animations()
 
 		try:
-			f = open(self.path,"wb")
+			f = open(self.path,"w")
 		except:
 			return False
 

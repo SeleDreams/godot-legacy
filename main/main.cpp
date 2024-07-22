@@ -42,7 +42,7 @@
 #include "input_map.h"
 #include "io/resource_loader.h"
 #include "scene/main/scene_main_loop.h"
-
+#include "core/error_macros.h"
 
 #include "script_language.h"
 #include "io/resource_loader.h"
@@ -52,6 +52,7 @@
 #include "core/io/ip.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/main/viewport.h"
+#include "core/version.h"
 
 #ifdef TOOLS_ENABLED
 #include "tools/editor/editor_node.h"

@@ -3,7 +3,7 @@ import glob
 
 pixmaps = glob.glob("*.png")
 
-f = open("../editor_icons.cpp","wb")
+f = open("../editor_icons.cpp","w")
 
 
 f.write("#include \"editor_icons.h\"\n\n")

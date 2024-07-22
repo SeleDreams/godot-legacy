@@ -11,7 +11,7 @@ def get_name():
 def can_build():
 
 	#import os
-	if (not os.environ.has_key("FLASCC_ROOT")):
+	if (not os.environ.get("FLASCC_ROOT")):
 		return False
 	return True
 
@@ -79,13 +79,12 @@ def configure(env):
 	#env["CXX"]='gcc-4'
 	import string
 	#include path
-	env['CCFLAGS'] = string.split('-fno-strict-aliasing -fno-rtti -fno-common -finline-limit=30000 -fno-exceptions -DNO_SAFE_CAST -DNO_THREADS -DNO_NETWORK -DNO_STATVFS')
+	env['CCFLAGS'] = '-fno-strict-aliasing -fno-rtti -fno-common -finline-limit=30000 -fno-exceptions -DNO_SAFE_CAST -DNO_THREADS -DNO_NETWORK -DNO_STATVFS'.split()
 
 	#env.Append(LDPATH=[ld_path])
 	env.Append(LIBS=['m', 'Flash++', 'AS3++', 'GL'])
 
 	env.Append(LINKFLAGS=['-symbol-abc=platform/flash/Console.abc'])
-	#env["LINKFLAGS"]= string.split(" -g --sysroot="+ld_sysroot+" -Wl,--no-undefined -Wl,-z,noexecstack -lsupc++ ")
 
 	#env.Append(CXXFLAGS=['-fno-access-control'])
 

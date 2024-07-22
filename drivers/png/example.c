@@ -587,7 +587,7 @@ void write_png(char *file_name /* , ... other image information ... */)
    png_colorp palette;
 
    /* Open the file */
-   fp = fopen(file_name, "wb");
+   fp = fopen(file_name, "w");
    if (fp == NULL)
       return (ERROR);
 

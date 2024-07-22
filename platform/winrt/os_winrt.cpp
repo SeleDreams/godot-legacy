@@ -653,7 +653,7 @@ OSWinrt::OSWinrt() {
 	last_id=0;
 	mouse_mode=MOUSE_MODE_VISIBLE;
 #ifdef STDOUT_FILE
-	stdo=fopen("stdout.txt","wb");
+	stdo=fopen("stdout.txt","w");
 #endif
 
 	gl_context = NULL;

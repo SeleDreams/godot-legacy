@@ -57,8 +57,8 @@ custom_tools=['default']
 if (os.name=="posix"):
 	pass
 elif (os.name=="nt"):
-    if (os.getenv("VSINSTALLDIR")==None):
-	custom_tools=['mingw']
+	if (os.getenv("VSINSTALLDIR")==None):
+		custom_tools=['mingw']
 
 env_base=Environment(tools=custom_tools,ENV = {'PATH' : os.environ['PATH']});
 #env_base=Environment(tools=custom_tools);
@@ -175,17 +175,17 @@ if selected_platform in platform_list:
 	CCFLAGS = env.get('CCFLAGS', '')
 	env['CCFLAGS'] = ''
 
-	env.Append(CCFLAGS=string.split(str(CCFLAGS)))
+	env.Append(CCFLAGS=str(CCFLAGS).split())
 
 	CFLAGS = env.get('CFLAGS', '')
 	env['CFLAGS'] = ''
 
-	env.Append(CFLAGS=string.split(str(CFLAGS)))
+	env.Append(CFLAGS=str(CFLAGS).split())
 
 	LINKFLAGS = env.get('LINKFLAGS', '')
 	env['LINKFLAGS'] = ''
 
-	env.Append(LINKFLAGS=string.split(str(LINKFLAGS)))
+	env.Append(LINKFLAGS=str(LINKFLAGS).split())
 
 	detect.configure(env)
 
@@ -195,7 +195,7 @@ if selected_platform in platform_list:
 		if not (f[0] in ARGUMENTS): # allow command line to override platform flags
 			env[f[0]] = f[1]
 
-        #env['platform_libsuffix'] = env['LIBSUFFIX']
+		#env['platform_libsuffix'] = env['LIBSUFFIX']
 
 	suffix="."+selected_platform
 
@@ -250,10 +250,10 @@ if selected_platform in platform_list:
 
 	if (env['musepack']=='yes'):
 		env.Append(CPPFLAGS=['-DMUSEPACK_ENABLED']);
-        if (env['openssl']!='no'):
-            env.Append(CPPFLAGS=['-DOPENSSL_ENABLED']);
-            if (env['openssl']=="builtin"):
-                env.Append(CPPPATH=['#drivers/builtin_openssl2'])
+		if (env['openssl']!='no'):
+			env.Append(CPPFLAGS=['-DOPENSSL_ENABLED']);
+			if (env['openssl']=="builtin"):
+				env.Append(CPPPATH=['#drivers/builtin_openssl2'])
 
 	if (env["builtin_zlib"]=='yes'):
 		env.Append(CPPPATH=['#drivers/builtin_zlib/zlib'])

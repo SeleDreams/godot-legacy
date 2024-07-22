@@ -64,7 +64,7 @@ while (fname!=""):
     l=fr.readline()
 
   fr.close()      
-  fr=open(fname.strip(),"wb")
+  fr=open(fname.strip(),"w")
   fr.write(text)
   fr.close()
   #print(text)

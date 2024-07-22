@@ -32,7 +32,7 @@
 #include "servers/visual/rasterizer.h"
 
 #ifdef GLES1_ENABLED
-
+#define LEGACYGL_ENABLED
 #include "image.h"
 #include "rid.h"
 #include "servers/visual_server.h"

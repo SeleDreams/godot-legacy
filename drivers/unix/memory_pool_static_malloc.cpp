@@ -343,7 +343,7 @@ void MemoryPoolStaticMalloc::dump_mem_to_file(const char* p_file) {
 	
 	ERR_FAIL_COND( !ringlist ); /** WTF BUG !? */
 	RingPtr *p = ringlist;
-	FILE *f = fopen(p_file,"wb");
+	FILE *f = fopen(p_file,"w");
 	
 	do {
 		fprintf(f,"%p-%i-%s\n", p+1, (int)p->size, (p->descr?p->descr:"") );

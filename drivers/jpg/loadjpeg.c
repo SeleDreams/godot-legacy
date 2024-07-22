@@ -92,7 +92,7 @@ static void write_tga(const char *filename, int output_format, int width, int he
      while (data > rgb_data);
    }
 
-  F = fopen(temp, "wb");
+  F = fopen(temp, "w");
   fwrite(targaheader, sizeof(targaheader), 1, F);
   fwrite(rgb_data, 1, bufferlen, F);
   fclose(F);
@@ -107,15 +107,15 @@ static void write_yuv(const char *filename, int width, int height, unsigned char
   char temp[1024];
 
   snprintf(temp, 1024, "%s.Y", filename);
-  F = fopen(temp, "wb");
+  F = fopen(temp, "w");
   fwrite(components[0], width, height, F);
   fclose(F);
   snprintf(temp, 1024, "%s.U", filename);
-  F = fopen(temp, "wb");
+  F = fopen(temp, "w");
   fwrite(components[1], width*height/4, 1, F);
   fclose(F);
   snprintf(temp, 1024, "%s.V", filename);
-  F = fopen(temp, "wb");
+  F = fopen(temp, "w");
   fwrite(components[2], width*height/4, 1, F);
   fclose(F);
 }
@@ -129,7 +129,7 @@ static void write_pgm(const char *filename, int width, int height, unsigned char
   char temp[1024];
 
   snprintf(temp, 1024, "%s", filename);
-  F = fopen(temp, "wb");
+  F = fopen(temp, "w");
   fprintf(F, "P5\n%d %d\n255\n", width, height);
   fwrite(components[0], width, height, F);
   fclose(F);

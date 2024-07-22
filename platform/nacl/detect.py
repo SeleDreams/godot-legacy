@@ -10,7 +10,7 @@ def get_name():
 def can_build():
 
 	import os
-	if not os.environ.has_key("NACLPATH"):
+	if not os.environ.get("NACLPATH"):
 		return False
 	return True
 

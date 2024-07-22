@@ -7,41 +7,29 @@ import sys
 
 def is_active():
 	return True
-        
+		
 def get_name():
-        return "Windows"
+		return "Windows"
 
 def can_build():
-	
-	
-	if (os.name=="nt"):
+	if os.name=="nt":
 		#building natively on windows!
 		if (os.getenv("VSINSTALLDIR")):
 			return True 
 		else:
-			print("MSVC Not detected, attempting mingw.")
 			return True
-			
-			
-			
-	if (os.name=="posix"):
-
+	if os.name == "posix":
+		# Cross-compiling with MinGW-w64 (old MinGW32 is not supported)
 		mingw = "i586-mingw32msvc-"
 		mingw64 = "i686-w64-mingw32-"
 		if (os.getenv("MINGW32_PREFIX")):
 			mingw=os.getenv("MINGW32_PREFIX")
 		if (os.getenv("MINGW64_PREFIX")):
 			mingw64=os.getenv("MINGW64_PREFIX")
-
 		if os.system(mingw+"gcc --version >/dev/null") == 0 or os.system(mingw64+"gcc --version >/dev/null") ==0:
 			return True
 
-
-			
-	return False
-		
 def get_opts():
-
 	mingw=""
 	mingw64=""
 	if (os.name!="nt"):
@@ -52,7 +40,6 @@ def get_opts():
 		if (os.getenv("MINGW64_PREFIX")):
 			mingw64=os.getenv("MINGW64_PREFIX")
 
-
 	return [
 		('mingw_prefix','Mingw Prefix',mingw),
 		('mingw_prefix_64','Mingw Prefix 64 bits',mingw64),
@@ -60,7 +47,6 @@ def get_opts():
 	]
   
 def get_flags():
-
 	return [
 		('freetype','builtin'), #use builtin freetype
 		('openssl','builtin'), #use builtin openssl
@@ -73,8 +59,7 @@ def configure(env):
 
 	env.Append(CPPPATH=['#platform/windows'])
 
-
-	if (os.name=="nt" and os.getenv("VSINSTALLDIR")!=None):
+	if (os.name=="nt" and os.getenv("VCINSTALLDIR")!=None):
 		#build using visual studio
 		env['ENV']['TMP'] = os.environ['TMP']
 		env.Append(CPPPATH=['#platform/windows/include'])
@@ -119,15 +104,15 @@ def configure(env):
 		env.Append(LINKFLAGS=[p+env["LIBSUFFIX"] for p in LIBS])
 		
 		env.Append(LIBPATH=[os.getenv("WindowsSdkDir")+"/Lib"])
-                if (os.getenv("DXSDK_DIR")):
-                        DIRECTX_PATH=os.getenv("DXSDK_DIR")
-                else:
-                        DIRECTX_PATH="C:/Program Files/Microsoft DirectX SDK (March 2009)"
+		if (os.getenv("DXSDK_DIR")):
+				DIRECTX_PATH=os.getenv("DXSDK_DIR")
+		else:
+				DIRECTX_PATH="C:/Program Files/Microsoft DirectX SDK (March 2009)"
 
-                if (os.getenv("VCINSTALLDIR")):
-                        VC_PATH=os.getenv("VCINSTALLDIR")
-                else:
-                        VC_PATH=""
+		if (os.getenv("VCINSTALLDIR")):
+				VC_PATH=os.getenv("VCINSTALLDIR")
+		else:
+				VC_PATH=""
 
 		env.Append(CCFLAGS=["/I" + p for p in os.getenv("INCLUDE").split(";")])
 		env.Append(LIBPATH=[p for p in os.getenv("LIB").split(";")])
@@ -140,21 +125,57 @@ def configure(env):
 		# http://www.scons.org/wiki/LongCmdLinesOnWin32
 		if (os.name=="nt"):
 			import subprocess
-			def mySpawn(sh, escape, cmd, args, env):
-				newargs = ' '.join(args[1:])
-				cmdline = cmd + " " + newargs
-				startupinfo = subprocess.STARTUPINFO()
-				startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-				proc = subprocess.Popen(cmdline, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-				    stderr=subprocess.PIPE, startupinfo=startupinfo, shell = False, env = env)
-				data, err = proc.communicate()
-				rv = proc.wait()
-				if rv:
-					print "====="
-					print err
-					print "====="
-				return rv
-			env['SPAWN'] = mySpawn
+			if os.name != "nt":
+				return  # not needed, only for windows
+
+		# On Windows, due to the limited command line length, when creating a static library
+		# from a very high number of objects SCons will invoke "ar" once per object file;
+		# that makes object files with same names to be overwritten so the last wins and
+		# the library loses symbols defined by overwritten objects.
+		# By enabling quick append instead of the default mode (replacing), libraries will
+		# got built correctly regardless the invocation strategy.
+		# Furthermore, since SCons will rebuild the library from scratch when an object file
+		# changes, no multiple versions of the same object file will be present.
+		env.Replace(ARFLAGS="q")
+
+		def mySubProcess(cmdline, env):
+			startupinfo = subprocess.STARTUPINFO()
+			startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+			popen_args = {
+				"stdin": subprocess.PIPE,
+				"stdout": subprocess.PIPE,
+				"stderr": subprocess.PIPE,
+				"startupinfo": startupinfo,
+				"shell": False,
+				"env": env,
+			}
+			if sys.version_info >= (3, 7, 0):
+				popen_args["text"] = True
+			proc = subprocess.Popen(cmdline, **popen_args)
+			_, err = proc.communicate()
+			rv = proc.wait()
+			if rv:
+				print(err)
+			return rv
+
+		def mySpawn(sh, escape, cmd, args, env):
+			newargs = " ".join(args[1:])
+			cmdline = cmd + " " + newargs
+
+			rv = 0
+			env = {str(key): str(value) for key, value in iter(env.items())}
+			if len(cmdline) > 32000 and cmd.endswith("ar"):
+				cmdline = cmd + " " + args[1] + " " + args[2] + " "
+				for i in range(3, len(args)):
+					rv = mySubProcess(cmdline + args[i], env)
+					if rv:
+						break
+			else:
+				rv = mySubProcess(cmdline, env)
+
+			return rv
+
+		env["SPAWN"] = mySpawn
 
 		#build using mingw
 		if (os.name=="nt"):
@@ -169,7 +190,6 @@ def configure(env):
 
 		use64=False
 		if (env["bits"]=="32"):
-
 			if (env["mingw64_for_32"]=="yes"):
 				env.Append(CCFLAGS=['-m32'])
 				env.Append(LINKFLAGS=['-m32'])
@@ -178,8 +198,6 @@ def configure(env):
 				mingw_prefix=env["mingw_prefix_64"];
 			else:
 				mingw_prefix=env["mingw_prefix"];
-
-
 		else:
 			mingw_prefix=env["mingw_prefix_64"];
 			env.Append(LINKFLAGS=['-static'])
@@ -187,11 +205,9 @@ def configure(env):
 		nulstr=""
 
 		if (os.name=="posix"):
-		    nulstr=">/dev/null"
+			nulstr=">/dev/null"
 		else:
-		    nulstr=">nul"
-
-
+			nulstr=">nul"
 
 		if os.system(mingw_prefix+"gcc --version"+nulstr)!=0:
 			#not really super consistent but..
@@ -230,7 +246,7 @@ def configure(env):
 		env.Append(CPPFLAGS=['-DRTAUDIO_ENABLED'])
 		env.Append(CCFLAGS=['-DGLES2_ENABLED','-DGLES1_ENABLED','-DGLEW_ENABLED'])
 		env.Append(LIBS=['mingw32','opengl32', 'dsound', 'ole32', 'd3d9','winmm','gdi32','iphlpapi','wsock32','kernel32'])
-
+		env.Append(CCFLAGS=['-Wno-error=incompatible-pointer-types'])
 		if (env["bits"]=="32" and env["mingw64_for_32"]!="yes"):
 #			env.Append(LIBS=['gcc_s'])
 			#--with-arch=i686

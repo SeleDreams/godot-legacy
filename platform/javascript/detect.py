@@ -9,10 +9,9 @@ def get_name():
 	return "JavaScript"
 
 def can_build():
-
-        import os
-        if (not os.environ.has_key("EMSCRIPTEN_ROOT")):
-        	return False
+	import os
+	if (not os.environ.get("EMSCRIPTEN_ROOT")):
+		return False
 	return True
 
 def get_opts():
@@ -58,8 +57,6 @@ def configure(env):
 	env['RANLIB'] = em_path+"/emranlib"
 
 #	env.Append(LIBS=['c','m','stdc++','log','GLESv1_CM','GLESv2'])
-
-#	env["LINKFLAGS"]= string.split(" -g --sysroot="+ld_sysroot+" -Wl,--no-undefined -Wl,-z,noexecstack ")
 
 	if (env["target"]=="release"):
 

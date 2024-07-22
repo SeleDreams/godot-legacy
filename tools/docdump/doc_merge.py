@@ -8,7 +8,7 @@ old_doc=tree.getroot()
 tree = ET.parse(sys.argv[2])
 new_doc=tree.getroot()
 
-f = file(sys.argv[3],"wb")
+f = file(sys.argv[3],"w")
 tab=0
 
 old_classes={}

@@ -24,7 +24,7 @@ classes={}
 
 def make_class_list(class_list,columns):
 	
-	f=open("class_list.txt","wb")
+	f=open("class_list.txt","w")
 	prev=0
 	col_max = len(class_list) / columns + 1
 	print("col max is ", col_max)
@@ -226,7 +226,7 @@ def make_doku_class(node):
 
 	name = node.attrib["name"]
 	
-	f=open(name.lower()+".txt","wb")
+	f=open(name.lower()+".txt","w")
 
 	f.write("======  "+name+"  ======\n")
 

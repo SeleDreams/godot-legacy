@@ -13,7 +13,7 @@ def get_name():
 def can_build():
 
 	import os
-	if (not os.environ.has_key("QNX_TARGET")):
+	if (not os.environ.get("QNX_TARGET")):
 		return False
 	return True
 
@@ -70,13 +70,11 @@ def configure(env):
 
 	env.Append(CPPPATH = ['#platform/bb10'])
 	env.Append(LIBPATH = ['#platform/bb10/lib/$qnx_target', '#platform/bb10/lib/$qnx_target_ver'])
-	env.Append(CCFLAGS = string.split('-DBB10_ENABLED -DUNIX_ENABLED -DGLES2_ENABLED -DGLES1_ENABLED -D_LITTLE_ENDIAN -DNO_THREADS -DNO_FCNTL'))
+	env.Append(CCFLAGS = '-DBB10_ENABLED -DUNIX_ENABLED -DGLES2_ENABLED -DGLES1_ENABLED -D_LITTLE_ENDIAN -DNO_THREADS -DNO_FCNTL'.split())
 	if env['bb10_exceptions']=="yes":
 		env.Append(CCFLAGS = ['-fexceptions'])
 	else:
 		env.Append(CCFLAGS = ['-fno-exceptions'])
-
-	#env.Append(LINKFLAGS = string.split()
 
 	if (env["target"]=="release"):
 

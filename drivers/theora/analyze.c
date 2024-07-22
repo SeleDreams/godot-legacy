@@ -2602,7 +2602,7 @@ void oc_enc_mode_metrics_dump(oc_enc_ctx *_enc){
   int   qi;
   /*Generate sample points for complete list of QI values.*/
   for(qi=0;qi<64;qi++)oc_enc_mode_metrics_update(_enc,qi);
-  fmetrics=fopen("modedec.stats","wb");
+  fmetrics=fopen("modedec.stats","w");
   if(fmetrics!=NULL){
     fwrite(OC_MODE_METRICS,sizeof(OC_MODE_METRICS),1,fmetrics);
     fclose(fmetrics);

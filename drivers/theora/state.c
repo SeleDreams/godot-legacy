@@ -1094,7 +1094,7 @@ int oc_state_dump_frame(const oc_theora_state *_state,int _frame,
   iframe=_state->granpos>>_state->info.keyframe_granule_shift;
   pframe=_state->granpos-(iframe<<_state->info.keyframe_granule_shift);
   sprintf(fname,"%08i%s.png",(int)(iframe+pframe),_suf);
-  fp=fopen(fname,"wb");
+  fp=fopen(fname,"w");
   if(fp==NULL)return TH_EFAULT;
   image=(png_bytep *)oc_malloc_2d(height,6*width,sizeof(**image));
   if(image==NULL){

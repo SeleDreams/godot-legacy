@@ -38,7 +38,7 @@ abspath=env.Dir(".").abspath
 
 
 pp_basein = open(abspath+"/project.properties.template","rb")
-pp_baseout = open(abspath+"/java/project.properties","wb")
+pp_baseout = open(abspath+"/java/project.properties","w")
 pp_baseout.write( pp_basein.read() )
 
 refcount=1
@@ -53,7 +53,7 @@ pp_baseout.close()
 
 
 pp_basein = open(abspath+"/AndroidManifest.xml.template","rb")
-pp_baseout = open(abspath+"/java/AndroidManifest.xml","wb")
+pp_baseout = open(abspath+"/java/AndroidManifest.xml","w")
 manifest = pp_basein.read()
 manifest = manifest.replace("$$ADD_APPLICATION_CHUNKS$$",env.android_manifest_chunk)
 pp_baseout.write( manifest )
