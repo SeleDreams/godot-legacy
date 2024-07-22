@@ -91,7 +91,7 @@ def configure(env):
 		env.Append(CCFLAGS=['/MT','/Gd','/GR','/nologo'])
 		env.Append(CXXFLAGS=['/TP'])
 		env.Append(CPPFLAGS=['/DMSVC', '/GR', ])
-		env.Append(CCFLAGS=['/I'+os.getenv("WindowsSdkDir")+"/Include"])
+		env.Append(CCFLAGS=['/I'+ os.getenv("WindowsSdkDir") + "/Include"])
 		env.Append(CCFLAGS=['/DWINDOWS_ENABLED'])
 		env.Append(CCFLAGS=['/DRTAUDIO_ENABLED'])
 		env.Append(CCFLAGS=['/DWIN32'])
@@ -113,7 +113,7 @@ def configure(env):
 				VC_PATH=os.getenv("VCINSTALLDIR")
 		else:
 				VC_PATH=""
-
+		print(os.getenv("INCLUDE"))
 		env.Append(CCFLAGS=["/I" + p for p in os.getenv("INCLUDE").split(";")])
 		env.Append(LIBPATH=[p for p in os.getenv("LIB").split(";")])
 		env.Append(CCFLAGS=["/I"+DIRECTX_PATH+"/Include"])

@@ -1,5 +1,24 @@
 ![GODOT](/logo.png)
 
+# Godot Legacy
+
+This is the repository of the Godot legacy project.
+This project aims to maintain the 1.0 version of godot in order to ensure it stays easy to build.
+
+The goal is to be able to port it to various retro consoles such as the Nintendo 3DS, the Dreamcast etc thanks to its fixed pipeline.
+
+## How to build
+
+### Building for Windows
+
+You will need to have Scons installed and in your path as well as either Visual Studio, either MinGW.
+
+For Visual Studio, open the visual studio command prompt and go to the project's repository. then type `scons platform=windows bits=64 -j7 tools=yes target=release_debug` in order to build the editor for Windows 64-bit (adjust the -j depending on the number of cores on your CPU).
+
+For MinGW, just type the same command from any command line with mingw in your PATH.
+
+## Original readme
+
 ### The Engine
 
 Godot is a fully featured, open source, MIT licensed, game engine. It focuses on having great tools, and a visual oriented workflow that can export to PC, Mobile and Web platforms with no hassle.
